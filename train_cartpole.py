@@ -38,7 +38,6 @@ def verify_champion(network: NeuralNetwork, num_trials: int = 5, max_steps: int 
     return float(np.mean(scores))
 
 def render_network(network: NeuralNetwork, episodes: int = 3, max_steps: int = 500, use_panel: bool = True):
-    """Render the neural network playing CartPole with optional real-time decision display."""
     if use_panel:
         from network_visualizer import run_simulation_with_visualizer
         run_simulation_with_visualizer(network, episodes=episodes, max_steps=max_steps)
