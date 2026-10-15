@@ -13,6 +13,7 @@
     - Genetic selection and Gaussian mutation operational.
     - Pole stays upright for the maximum 500 frames (> 200 frame requirement).
     - Champion weights saved to `best_cartpole_model.npz`.
+    - Real-Time Neural Network Decision Display implemented alongside Cart-Pole simulation in `network_visualizer.py`.
 
 ## Next Immediate Step
-*   Run `python train_cartpole.py --test-only` to visually inspect the trained agent balancing the pole in pygame.
+*   Run `python network_visualizer.py` or `python train_cartpole.py --test-only` to watch the side-by-side simulation and decision display.

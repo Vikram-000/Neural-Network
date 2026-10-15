@@ -37,7 +37,13 @@ def verify_champion(network: NeuralNetwork, num_trials: int = 5, max_steps: int 
     env.close()
     return float(np.mean(scores))
 
-def render_network(network: NeuralNetwork, episodes: int = 3, max_steps: int = 500):
+def render_network(network: NeuralNetwork, episodes: int = 3, max_steps: int = 500, use_panel: bool = True):
+    """Render the neural network playing CartPole with optional real-time decision display."""
+    if use_panel:
+        from network_visualizer import run_simulation_with_visualizer
+        run_simulation_with_visualizer(network, episodes=episodes, max_steps=max_steps)
+        return
+
     print(f"\n[Visual Demo] Rendering trained network for {episodes} episodes...")
     env = gym.make("CartPole-v1", render_mode="human")
     for ep in range(1, episodes + 1):
@@ -66,6 +72,7 @@ def train_genetic_algorithm(
     eval_episodes: int = 2,
     save_path: str = "best_cartpole_model.npz",
     render_after_training: bool = False,
+    use_panel: bool = True,
 ):
     print("=" * 60)
     print("  CartPole Neural Network Training (Genetic Algorithm)")
@@ -145,7 +152,7 @@ def train_genetic_algorithm(
         print(f"Final 10-episode generalization benchmark: {final_test_score:.1f} / 500.0 steps")
 
         if render_after_training:
-            render_network(best_overall_network)
+            render_network(best_overall_network, use_panel=use_panel)
 
     return best_overall_network
 
@@ -158,14 +165,17 @@ def main():
     parser.add_argument("--render", action="store_true", help="Render champion network after training")
     parser.add_argument("--test-only", action="store_true", help="Load saved model and render without training")
     parser.add_argument("--weights", type=str, default="best_cartpole_model.npz", help="Weights file path")
+    parser.add_argument("--no-panel", action="store_true", help="Disable the neural decision display panel")
     args = parser.parse_args()
+
+    use_panel = not args.no_panel
 
     if args.test_only:
         network = NeuralNetwork(input_size=4, hidden_size=args.hidden_size, output_size=2)
         try:
             network.load(args.weights)
             print(f"Loaded weights from {args.weights}")
-            render_network(network, episodes=5)
+            render_network(network, episodes=5, use_panel=use_panel)
         except FileNotFoundError:
             print(f"Error: Model file '{args.weights}' not found. Please train first!")
     else:
@@ -176,6 +186,7 @@ def main():
             target_fitness=args.target,
             save_path=args.weights,
             render_after_training=args.render,
+            use_panel=use_panel,
         )
 
 if __name__ == "__main__":
