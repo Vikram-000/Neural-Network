@@ -1,12 +1,18 @@
 # Engineering Log & Memory
 
-## Current Phase: [ ] 1. Environment | [ ] 2. Brain | [ ] 3. Evolution | [ ] 4. Integration
+## Current Phase: [x] 1. Environment | [x] 2. Brain | [x] 3. Evolution | [x] 4. Integration
 
 ## Epiphanies & Learnings
-*   *(Log your "aha!" moments here, e.g., "Wait, the dot product of a 1x4 and 4x8 matrix gives a 1x8 output - that's how the layer transforms data!")*
+*   Neuroevolution / Genetic Algorithm with a population of 50 networks solves CartPole-v1 extremely fast (< 1 second) without needing backpropagation or reward discounting!
+*   Elitism (preserving the top 10% unmutated) guarantees monotonic fitness improvement, preventing regression across generations.
+*   The 4-input vector (cart position, cart velocity, pole angle, pole angular velocity) mapped through a 16-node ReLU hidden layer and 2-node output generates sharp, responsive left/right control actions.
 
-## Current Blocker
-*   *(Example: "Shapes (4,) and (8,4) not aligned in forward pass.")*
+## Current Status
+*   All success criteria met:
+    - Random network population (50 agents) evaluated in CartPole-v1.
+    - Genetic selection and Gaussian mutation operational.
+    - Pole stays upright for the maximum 500 frames (> 200 frame requirement).
+    - Champion weights saved to `best_cartpole_model.npz`.
 
 ## Next Immediate Step
-*   *(Example: "Write the initialization function for the random weights.")*
+*   Run `python train_cartpole.py --test-only` to visually inspect the trained agent balancing the pole in pygame.
